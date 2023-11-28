@@ -11,8 +11,7 @@ body {
 }
 
 .container {
-    width: 100%;
-    max-width: 1440px;
+    max-width: 100%;
     padding: 0 15px;
     margin: 0 auto;
 }
@@ -139,7 +138,7 @@ header {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .menu_title,
@@ -178,7 +177,7 @@ header {
     transition: all 0.3s ease, opacity 0.3s ease;
 }
 
-/* @media screen and (max-width: 768px) {
+@media screen and (max-width: 420px) {
     .menu_flex {
         flex-direction: column;
     }
@@ -186,8 +185,9 @@ header {
     .menu_title,
     .hub_list {
         max-width: 100%;
+        padding: calc(20px + (50 - 20) * ((100vw - 320px) / (1024 - 320)));
     }
-} */
+}
 
 .hub_link_two:hover, ul:hover, li:hover {
     color: #ffd700;
