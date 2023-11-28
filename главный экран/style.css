@@ -12,9 +12,15 @@ body {
 
 .container {
     width: 100%;
-    max-width: 1280px;
+    max-width: 1440px;
     padding: 0 15px;
     margin: 0 auto;
+}
+
+header, section {
+    max-width: 1440px;
+    padding: 0px 15px;
+    margin: 0px auto;
 }
 
 header {
@@ -83,10 +89,15 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.section_text {
+.section_text, .btn {
     text-align: left;
     max-width: 100%;
     max-width: 455px;
+    margin-bottom: calc(10px + (20 - 10) * ((100vw - 320px) / (1024 - 320)));
+    padding: calc(20px + (50 - 20) * ((100vw - 320px) / (1024 - 320)));
+    font-size: calc(14px + (16 - 14) * ((100vw - 320px) / (1024 - 320)));
+
+
 }
 
 .btn a {
@@ -101,7 +112,7 @@ header {
     border-radius: 4px;
     margin-right: 10px;
     text-decoration: none;
-    transition: background-color 0.3s ease, opacity 0.3s ease;
+    transition: all 0.04s ease;
 }
 
 .btn a:hover {
@@ -109,36 +120,12 @@ header {
     opacity: 0.8;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
     .content-container {
         flex-direction: row;
         justify-content: space-between;
-    }
-
-    .about_item {
-        width: 45%;
-        max-width: 400px;
-    }
-
-    .text-content {
-        max-width: 45%;
-        text-align: left;
-    }
-
-    h2 {
-        font-size: 32px;
-    }
-
-    p {
-        font-size: 18px;
-    }
-
-    .btn a {
-        padding: 15px 25px;
-        font-size: 18px;
-    }
 }
-
+}
 .menu {
     background-image: url('../img/footer-background.png');
     background-size: cover;
@@ -191,7 +178,7 @@ header {
     transition: all 0.3s ease, opacity 0.3s ease;
 }
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
     .menu_flex {
         flex-direction: column;
     }
@@ -200,7 +187,7 @@ header {
     .hub_list {
         max-width: 100%;
     }
-}
+} */
 
 .hub_link_two:hover, ul:hover, li:hover {
     color: #ffd700;
@@ -227,6 +214,8 @@ header {
 img {
     border-radius: 40px;
     transition: all 0.6s ease;
+    height: calc(230px + (460 - 230) * ((100vw - 320px) / (1024 - 320)));
+    width: calc(210px + (420 - 210) * ((100vw - 320px) / (1024 - 320)));
 }
 img:hover {
     transform: scale(1.05);
