@@ -6,6 +6,10 @@ body {
     color: #fff;
 }
 
+.wrapper {
+    min-height: 100%;
+}
+
 .container {
     width: 100%;
     max-width: 1280px;
@@ -21,8 +25,8 @@ header {
 }
 
 .header_title h1 {
-    margin: 0;
-    font-size: 24px;
+    margin: 20px;
+    font-size: 54px;
 }
 
 .header_inner {
@@ -42,11 +46,12 @@ header {
 .link {
     text-decoration: none;
     color: #fff;
-    transition: color 0.3s ease;
+    transition: all 0.4s ease;
 }
 
-.link:hover {
+.link:hover{
     color: #ffd700;
+    transform: scale(1.10);
 }
 
 @media (max-width: 768px) {
@@ -178,12 +183,12 @@ header {
     padding: 0;
 }
 
-.hub_link_two {
+.hub_link_two, ul, li {
     text-decoration: none;
     color: #fff;
     font-size: 14px;
     opacity: 0.8;
-    transition: color 0.3s ease, opacity 0.3s ease;
+    transition: all 0.3s ease, opacity 0.3s ease;
 }
 
 @media screen and (max-width: 768px) {
@@ -197,9 +202,10 @@ header {
     }
 }
 
-.hub_link_two:hover {
+.hub_link_two:hover, ul:hover, li:hover {
     color: #ffd700;
     opacity: 1;
+    transform: scale(1.05);
 }
 
 ::-webkit-scrollbar {
@@ -216,4 +222,12 @@ header {
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: #888;
+}
+
+img {
+    border-radius: 40px;
+    transition: all 0.6s ease;
+}
+img:hover {
+    transform: scale(1.05);
 }
