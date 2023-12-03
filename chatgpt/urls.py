@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import ChatMasterView
+from .views import ChatMasterView, StoryView,CustomUserList
 
 urlpatterns = [
     path('game/', ChatMasterView.as_view(), name='game_master'),
+    path('story/', StoryView.as_view(), name='story'),
+    path('userinfo/', CustomUserList.as_view(), name='list'),
 
 ]

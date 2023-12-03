@@ -3,6 +3,12 @@ from rest_framework import serializers
 from .models import CustomUser
 
 
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name')
+
+
 class UserRegisSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -31,3 +37,5 @@ class UserRegisSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+

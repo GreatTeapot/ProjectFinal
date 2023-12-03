@@ -1,40 +1,20 @@
 from rest_framework.permissions import AllowAny
-
-from .models import ChatText
+from .models import ChatText, Story
 from openai import OpenAI
-from rest_framework import serializers, status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from .serializers import ChatGptSerializer
+from .serializers import ChatGptSerializer, StorySerializer
 
 client = OpenAI(
-    # defaults to os.environ.get("OPENAI_API_KEY")
     api_key="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",
 )
-def save_chat_request_and_response(request_text):
-    try:
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": request_text,
-                }
-            ],
-            model="gpt-3.5-turbo",
-            temperature=1,
-            max_tokens=200
-        )
 
-        response_text = chat_completion['choices'][0]['message']['content']
-        print(response_text)
-        # Создаем и сохраняем объект в базе данных с использованием модели ChatText
-        response_obj = ChatText.objects.create(text=response_text)
 
-        return response_obj
-    except Exception as e:
-        print(f"Error during OpenAI API call: {e}")
-        return None
+class CustomUserList(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
 
 
 class ChatMasterView(APIView):
@@ -47,14 +27,67 @@ class ChatMasterView(APIView):
         if serializer.is_valid():
             input_text = serializer.validated_data['text']
 
-            # Сохраняем запрос и ответ
-            response_obj = save_chat_request_and_response(input_text)
+            # Получение текущей истории из базы данных
+            current_story = Story.objects.latest('id')
 
-            if response_obj:
-                # Отправляем ответ клиенту с информацией об объекте
-                response_data = {"text": response_obj.text, "response_id": response_obj.pk}
-                return Response(response_data, status=status.HTTP_200_OK)
-            else:
-                return Response({"error": "Failed to process the request"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            chat_completion = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "system",
+                        "content": f"Есть такая история: {current_story.description}. Текущие характеристики персонажа: Здоровье - {current_story.health}."
+                    },
+                    {
+                        "role": "user",
+                        "content": input_text,
+                    }
+                ],
+                model="gpt-3.5-turbo",
+                temperature=1,
+                max_tokens=2000
+            )
+
+            # Сохранение ответа в модели ChatText
+            response_text = chat_completion.choices[0].message.content
+            ChatText.objects.create(text=input_text, answer_player=response_text)
+
+            # Обновление здоровья в текущей истории
+            health_indexes = [response_text.find("Здоровье - "), response_text.find("Здоровье игрока:")]
+            health_values = []
+
+            for index in health_indexes:
+                if index != -1:
+                    # Извлекаем числовое значение после фразы
+                    value = int(response_text[index + len("Здоровье - "):].split('.')[0].strip())
+                    health_values.append(value)
+
+            # Используем более актуальное значение здоровья
+            if health_values:
+                current_story.health = max(health_values)
+                current_story.save()
+            # Удаление "Здоровье игрока" из response_text
+            response_text = response_text.replace(f"Здоровье игрока: {current_story.health}", "")
+            # Вывод оставшегося здоровья
+            response_data = {"text": f"{response_text} Здоровье игрока: {current_story.health}"}
+
+            return Response(response_data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StoryView(APIView):
+    serializer_class = StorySerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = StorySerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        stories = Story.objects.all()
+        serializer = StorySerializer(stories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

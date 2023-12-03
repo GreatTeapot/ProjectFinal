@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import ChatText, Story
 
-# Register your models here.
+admin.site.register(ChatText)
+admin.site.register(Story)
