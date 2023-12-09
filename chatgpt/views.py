@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import ChatText, Story
 from openai import OpenAI
 from rest_framework import status, generics
@@ -7,19 +7,19 @@ from rest_framework.views import APIView
 from .serializers import ChatGptSerializer, StorySerializer
 
 client = OpenAI(
-    api_key="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",
+    api_key="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",
 )
 
 
 class CustomUserList(generics.ListAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
 
 class ChatMasterView(APIView):
     serializer_class = ChatGptSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         serializer = ChatGptSerializer(data=request.data)
@@ -34,7 +34,11 @@ class ChatMasterView(APIView):
                 messages=[
                     {
                         "role": "system",
-                        "content": f"Есть такая история: {current_story.description}. Текущие характеристики персонажа: Здоровье - {current_story.health}."
+                        "content": f"Ты должен разыграть в зависимости от ответа пользователя игровую ситуацию, в конце ты должен описать что произойдет дальше с положительными или отрицательными эффектами и в конце истории будет указано оставшееся здоровье персонажа в формате  Текущее здоровье - {current_story.health}. Убери в ответе все \n"
+                    },
+                    {
+                        "role": "assistant",
+                        "content": f" {current_story.description}."
                     },
                     {
                         "role": "user",
