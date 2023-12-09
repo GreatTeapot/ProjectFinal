@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from .models import ChatText, Story
 from openai import OpenAI
 from rest_framework import status, generics
@@ -13,13 +13,13 @@ client = OpenAI(
 
 class CustomUserList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Story.objects.all()
+    queryset = ChatText.objects.all()
     serializer_class = StorySerializer
 
 
 class ChatMasterView(APIView):
     serializer_class = ChatGptSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = ChatGptSerializer(data=request.data)
@@ -34,11 +34,11 @@ class ChatMasterView(APIView):
                 messages=[
                     {
                         "role": "system",
-                        "content": f"Ты должен разыграть в зависимости от ответа пользователя игровую ситуацию, в конце ты должен описать что произойдет дальше с положительными или отрицательными эффектами и в конце истории будет указано оставшееся здоровье персонажа в формате  Текущее здоровье - {current_story.health}. Убери в ответе все \n"
+                        "content": f"В конце ты должен описать что произойдет дальше с положительными или отрицательными эффектами и в конце истории будет указано оставшееся здоровье персонажа в формате  Здоровье - {current_story.health}."
                     },
                     {
                         "role": "assistant",
-                        "content": f" {current_story.description}."
+                        "content": f" история: {current_story.description}."
                     },
                     {
                         "role": "user",
@@ -80,7 +80,7 @@ class ChatMasterView(APIView):
 
 class StoryView(APIView):
     serializer_class = StorySerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
 
     def post(self, request, *args, **kwargs):
         serializer = StorySerializer(data=request.data)
