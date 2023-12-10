@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from .serializers import ChatGptSerializer
 
-
+# sasa
 class ChatMasterView(APIView):
     serializer_class = ChatGptSerializer
     permission_classes = [AllowAny]
