@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -153,4 +153,9 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Пример: токен доступа действителен 15 минут
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Пример: токен обновления действителен 1 день
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=5),  # Пример: срок обновления сдвигается при каждом использовании до 5 дней
 }

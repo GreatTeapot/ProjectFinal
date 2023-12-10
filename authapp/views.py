@@ -1,6 +1,6 @@
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import  generics
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserRegisSerializer, ChangePasswordSerializer, UsersSerializer
 from .models import CustomUser
@@ -26,9 +26,6 @@ class CustomUserLoginView(TokenObtainPairView):
     pass
 
 
-
-
-
 class CustomUserList(generics.ListAPIView):
     permission_classes = [AllowAny]
     queryset = CustomUser.objects.all()
@@ -38,6 +35,14 @@ class CustomUserList(generics.ListAPIView):
 class CustomUserUpdate(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = CustomUser.objects.all()
+
+
+class UserInfoAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_serializer = UsersSerializer(request.user)
+        return Response(user_serializer.data)
 
 
 class ChangePasswordAPIView(APIView):
