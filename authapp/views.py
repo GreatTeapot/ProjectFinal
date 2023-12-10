@@ -1,8 +1,8 @@
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import  generics
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserRegisSerializer, ChangePasswordSerializer
+from .serializers import UserRegisSerializer, ChangePasswordSerializer, UsersSerializer
 from .models import CustomUser
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -29,11 +29,20 @@ class CustomUserLoginView(TokenObtainPairView):
 class CustomUserList(generics.ListAPIView):
     permission_classes = [AllowAny]
     queryset = CustomUser.objects.all()
+    serializer_class = UsersSerializer
 
 
 class CustomUserUpdate(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = CustomUser.objects.all()
+
+
+class UserInfoAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_serializer = UsersSerializer(request.user)
+        return Response(user_serializer.data)
 
 
 class ChangePasswordAPIView(APIView):
@@ -56,19 +65,6 @@ class ChangePasswordAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        try:
-            refresh_token = request.data["refresh"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": "Invalid refresh token."}, status=status.HTTP_401_UNAUTHORIZED)
-
-
 class CustomUserTokenRefreshView(APIView):
     def post(self, request, *args, **kwargs):
         try:
@@ -77,7 +73,7 @@ class CustomUserTokenRefreshView(APIView):
             access_token = str(token.access_token)
             return Response({'access': access_token}, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({'error': 'invalid , где токен?'}, status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'invalid token'}, status.HTTP_401_UNAUTHORIZED)
 
 
 # class AllUsersView(APIView):
