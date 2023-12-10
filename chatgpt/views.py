@@ -9,7 +9,7 @@ from .serializers import ChatGptSerializer, StorySerializer
 client = OpenAI(
     api_key="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",
 )
-
+# sadas
 
 class CustomUserList(generics.ListAPIView):
     permission_classes = [AllowAny]
