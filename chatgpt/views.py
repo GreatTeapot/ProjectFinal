@@ -7,24 +7,26 @@ from rest_framework.views import APIView
 from .serializers import ChatGptSerializer, StorySerializer
 
 client = OpenAI(
-    api_key="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",
-)
 
+    api_key="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",
+
+)
+# sadas
 
 class CustomUserList(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     queryset = ChatText.objects.all()
     serializer_class = StorySerializer
 
 
 class ChatMasterView(APIView):
     serializer_class = ChatGptSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         serializer = ChatGptSerializer(data=request.data)
-
         if serializer.is_valid():
+            serializer.validated_data['user'] = self.request.user
             input_text = serializer.validated_data['text']
 
             # Получение текущей истории из базы данных
@@ -34,7 +36,7 @@ class ChatMasterView(APIView):
                 messages=[
                     {
                         "role": "system",
-                        "content": f"В конце ты должен описать что произойдет дальше с положительными или отрицательными эффектами и в конце истории будет указано оставшееся здоровье персонажа в формате  Здоровье - {current_story.health}."
+                        "content": f"В конце ты должен описать что произойдет дальше с положительными или отрицательными эффектами которые возможно будет  менять Здоровье  и в конце истории будет указано оставшееся здоровье персонажа  в формате  Здоровье - {current_story.health}. Здоровье выводишь только 1 раз не более."
                     },
                     {
                         "role": "assistant",
@@ -86,6 +88,8 @@ class StoryView(APIView):
         serializer = StorySerializer(data=request.data)
 
         if serializer.is_valid():
+            # Укажите пользователя в объекте Story
+            serializer.validated_data['user'] = self.request.user
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
