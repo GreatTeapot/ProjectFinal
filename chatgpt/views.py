@@ -7,7 +7,9 @@ from rest_framework.views import APIView
 from .serializers import ChatGptSerializer, StorySerializer
 
 client = OpenAI(
+
     api_key="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",
+
 )
 # sadas
 
