@@ -16,3 +16,4 @@ class StorySerializer(serializers.ModelSerializer):
         model = Story
         fields = ['id', 'name', 'role', 'description', 'health']
 
+# xssaxa
