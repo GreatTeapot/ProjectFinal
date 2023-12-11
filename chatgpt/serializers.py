@@ -4,17 +4,18 @@ from .models import ChatText, Story
 from authapp.serializers import UsersSerializer
 
 
-class ChatGptSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChatText
-
-        fields = ['id', 'text', 'answer_player', 'user']
-
-
 class StorySerializer(serializers.ModelSerializer):
-    user = UsersSerializer(read_only=True)
+    user = UsersSerializer()
 
     class Meta:
         model = Story
         fields = ['id', 'name', 'role', 'description', 'health', 'user']
 
+
+class ChatGptSerializer(serializers.ModelSerializer):
+    story = StorySerializer(required=False)
+
+    class Meta:
+        model = ChatText
+
+        fields = ['id', 'text', 'answer_player', 'user', 'story']

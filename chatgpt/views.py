@@ -7,16 +7,16 @@ from rest_framework.views import APIView
 from .serializers import ChatGptSerializer, StorySerializer
 
 client = OpenAI(
-
-    api_key="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",
-
+    api_key="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",
 )
 # sadas
 
+
 class CustomUserList(generics.ListAPIView):
     permission_classes = [AllowAny]
-    queryset = ChatText.objects.all()
+    queryset = Story.objects.all()
     serializer_class = StorySerializer
+
 
 # sasa
 class ChatMasterView(APIView):
@@ -25,13 +25,22 @@ class ChatMasterView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = ChatGptSerializer(data=request.data)
+        user = self.request.user
+
+        # Поиск текущей истории для пользователя (предполагается, что у пользователя может быть только одна активная история)
+        current_story = Story.objects.filter(user=user).latest('id')
         if serializer.is_valid():
             serializer.validated_data['user'] = self.request.user
             input_text = serializer.validated_data['text']
-
-            # Получение текущей истории из базы данных
+            serializer.validated_data['story'] = current_story
             current_story = Story.objects.latest('id')
 
+            chat_text = ChatText.objects.create(
+                user=self.request.user,
+                answer_player="нечего не выдавай",
+                text=input_text,
+                story=current_story,
+            )
             chat_completion = client.chat.completions.create(
                 messages=[
                     {
@@ -40,7 +49,7 @@ class ChatMasterView(APIView):
                     },
                     {
                         "role": "assistant",
-                        "content": f" история: {current_story.description}."
+                        "content": f"  {current_story.description}."
                     },
                     {
                         "role": "user",
@@ -49,14 +58,12 @@ class ChatMasterView(APIView):
                 ],
                 model="gpt-3.5-turbo",
                 temperature=1,
-                max_tokens=2000
+                max_tokens=500
             )
 
-            # Сохранение ответа в модели ChatText
             response_text = chat_completion.choices[0].message.content
             ChatText.objects.create(text=input_text, answer_player=response_text)
 
-            # Обновление здоровья в текущей истории
             health_indexes = [response_text.find("Здоровье - "), response_text.find("Здоровье игрока:")]
             health_values = []
 
@@ -70,9 +77,7 @@ class ChatMasterView(APIView):
             if health_values:
                 current_story.health = max(health_values)
                 current_story.save()
-            # Удаление "Здоровье игрока" из response_text
             response_text = response_text.replace(f"Здоровье игрока: {current_story.health}", "")
-            # Вывод оставшегося здоровья
             response_data = {"text": f"{response_text} Здоровье игрока: {current_story.health}"}
 
             return Response(response_data, status=status.HTTP_200_OK)

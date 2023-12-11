@@ -16,9 +16,9 @@ class Story(models.Model):
 
 class ChatText(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-    answer_player = models.TextField(default='нечего не выдавай')
+    answer_player = models.TextField(default='что то я не хочу отвечать ')
     text = models.TextField()
-
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return f"Chat Text #{self.pk}"

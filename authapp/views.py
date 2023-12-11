@@ -34,11 +34,13 @@ class CustomUserList(generics.ListAPIView):
 
 class CustomUserUpdate(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UsersSerializer
     queryset = CustomUser.objects.all()
 
 
 class UserInfoAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UsersSerializer()
 
     def get(self, request, *args, **kwargs):
         user_serializer = UsersSerializer(request.user)
@@ -48,6 +50,7 @@ class UserInfoAPIView(APIView):
 class ChangePasswordAPIView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ChangePasswordSerializer
+
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
