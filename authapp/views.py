@@ -26,6 +26,9 @@ class CustomUserLoginView(TokenObtainPairView):
     pass
 
 
+
+
+
 class CustomUserList(generics.ListAPIView):
     permission_classes = [AllowAny]
     queryset = CustomUser.objects.all()
@@ -35,14 +38,6 @@ class CustomUserList(generics.ListAPIView):
 class CustomUserUpdate(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = CustomUser.objects.all()
-
-
-class UserInfoAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, *args, **kwargs):
-        user_serializer = UsersSerializer(request.user)
-        return Response(user_serializer.data)
 
 
 class ChangePasswordAPIView(APIView):

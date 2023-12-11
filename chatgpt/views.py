@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.permissions import AllowAny
 from .models import ChatText, Story
 from openai import OpenAI
 from rest_framework import status, generics
@@ -7,13 +7,13 @@ from rest_framework.views import APIView
 from .serializers import ChatGptSerializer, StorySerializer
 
 client = OpenAI(
-    api_key="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",
+    api_key="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",
 )
 
 
 class CustomUserList(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = ChatText.objects.all()
+    permission_classes = [AllowAny]
+    queryset = Story.objects.all()
     serializer_class = StorySerializer
 
 
@@ -34,11 +34,7 @@ class ChatMasterView(APIView):
                 messages=[
                     {
                         "role": "system",
-                        "content": f"В конце ты должен описать что произойдет дальше с положительными или отрицательными эффектами и в конце истории будет указано оставшееся здоровье персонажа в формате  Здоровье - {current_story.health}."
-                    },
-                    {
-                        "role": "assistant",
-                        "content": f" история: {current_story.description}."
+                        "content": f"Есть такая история: {current_story.description}. Текущие характеристики персонажа: Здоровье - {current_story.health}."
                     },
                     {
                         "role": "user",
@@ -80,7 +76,7 @@ class ChatMasterView(APIView):
 
 class StoryView(APIView):
     serializer_class = StorySerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = StorySerializer(data=request.data)
