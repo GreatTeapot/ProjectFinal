@@ -1,8 +1,9 @@
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
-
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from .models import CustomUser
+from django.utils.translation import gettext_lazy as _
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -39,7 +40,18 @@ class UserRegisSerializer(serializers.ModelSerializer):
         except ValidationError as e:
             raise serializers.ValidationError(str(e))
 
+        username_validator = CustomUsernameValidator(min_length=3)
+        username = data.get('username')
+
+        try:
+            # Validate the username using CustomUsernameValidator.
+            username_validator(username)
+        except ValidationError as e:
+            raise serializers.ValidationError({'username': str(e)})
+
         return data
+
+
 
     def create(self, validated_data):
         user = CustomUser.objects.create_user(
@@ -55,5 +67,25 @@ class UserRegisSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+
+class CustomUsernameValidator(UnicodeUsernameValidator):
+    def __init__(self, min_length=3, *args, **kwargs):
+        self.min_length = min_length
+        super().__init__(*args, **kwargs)
+
+    def validate(self, value):
+        super().validate(value)
+        if len(value) < self.min_length:
+            raise ValidationError(
+                _("Username must be at least %(min_length)d characters long."),
+                code='username_too_short',
+                params={'min_length': self.min_length},
+            )
+        if not value.isalnum():
+            raise ValidationError(
+                _("Username must contain only letters and numbers."),
+                code='username_invalid_characters',
+            )
 
 

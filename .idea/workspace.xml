@@ -5,41 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b65d1382-2de2-42e1-81f0-07fa057c9cae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/main/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/main/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/migrations/0002_alter_customuser_email_alter_customuser_password_and_more.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/migrations/0002_alter_customuser_email_alter_customuser_password_and_more.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/migrations/0003_alter_customuser_password.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/migrations/0003_alter_customuser_password.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/migrations/0004_alter_customuser_email_alter_customuser_username.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/migrations/0004_alter_customuser_email_alter_customuser_username.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/migrations/0005_alter_customuser_email_alter_customuser_first_name_and_more.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/migrations/0005_alter_customuser_email_alter_customuser_first_name_and_more.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/migrations/0006_alter_customuser_password.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/migrations/0006_alter_customuser_password.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatgpt/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/chatgpt/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/main/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/authapp/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/authapp/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/main/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,13 +58,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "51ef57f9",
+    "git-widget-placeholder": "1f2edda4",
     "last_opened_file_path": "C:/All python/ProjectFinal",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -165,7 +133,8 @@
       <workItem from="1702267718109" duration="7360000" />
       <workItem from="1702285324822" duration="13507000" />
       <workItem from="1702300737333" duration="3917000" />
-      <workItem from="1702306866538" duration="1675000" />
+      <workItem from="1702306866538" duration="7725000" />
+      <workItem from="1702350059761" duration="2922000" />
     </task>
     <servers />
   </component>

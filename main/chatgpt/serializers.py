@@ -1,11 +1,13 @@
 from rest_framework import serializers
+from authapp.models import CustomUser
+
 from .models import ChatText, Story
 
 from authapp.serializers import UsersSerializer
 
 
 class StorySerializer(serializers.ModelSerializer):
-    user = UsersSerializer()
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())  # Используем PrimaryKeyRelatedField
 
     class Meta:
         model = Story

@@ -85,7 +85,8 @@ class CustomUserTokenRefreshView(APIView):
 #
 #     def get(self, request):
 #         users = self.get_queryset()
-#         serializer = UserSerializer(users, many=True)
+#         serializer
+#         = UserSerializer(users, many=True)
 #         return Response(serializer.data)
 #
 #     # def put(self, request, *args, **kwargs):

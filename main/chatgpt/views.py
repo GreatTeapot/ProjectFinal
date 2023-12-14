@@ -1,3 +1,4 @@
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from .models import ChatText, Story
 from openai import OpenAI
@@ -35,12 +36,7 @@ class ChatMasterView(APIView):
             input_text = serializer.validated_data['text']
             serializer.validated_data['story'] = current_story
 
-            chat_text = ChatText.objects.create(
-                user=self.request.user,
-                answer_player="это надо пофиксить",
-                text=input_text,
-                story=current_story,
-            )
+
             chat_completion = client.chat.completions.create(
                 messages=[
                     {
@@ -86,21 +82,31 @@ class ChatMasterView(APIView):
 
 
 class StoryView(APIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = StorySerializer
-    permission_classes = [IsAdminUser]
 
     def post(self, request, *args, **kwargs):
-        serializer = StorySerializer(data=request.data)
+        # Extract the user from the authenticated token
+        user = request.user
+
+        # Add the user to the request data before validating the serializer
+
+        request_data = request.data.copy()
+        request_data['user'] = user.id
+        serializer = self.serializer_class(data=request_data)
 
         if serializer.is_valid():
-            # Укажите пользователя в объекте Story
-            serializer.validated_data['user'] = self.request.user
+            # Связываем историю с текущим пользователем
+            serializer.validated_data['user'] = user
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
     def get(self, request, *args, **kwargs):
-        stories = Story.objects.all()
+        # Получаем и возвращаем только те истории, которые принадлежат текущему пользователю
+        user = request.user
+        stories = Story.objects.filter(user=user)
         serializer = StorySerializer(stories, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
