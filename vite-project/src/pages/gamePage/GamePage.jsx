@@ -1,5 +1,9 @@
+import React from "react";
+
 export function GamePage() {
   return(
-    <div></div>
+    <div className="game">
+      <div></div>
+    </div>
   )
 }
