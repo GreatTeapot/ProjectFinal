@@ -1,12 +1,11 @@
 import {createBrowserRouter} from 'react-router-dom';
-import {HomePage,
-  RegisterPage,
-  LogInPage,
-  LogOutPage,
-  MainOurUserPage,
-  MainNewUserPage,
-  GamePage
-} from '@/pages';
+import {HomePage} from '../pages/HomePage';
+import {RegisterPage} from '../pages/RegisterPage';
+import {LogInPage} from '../pages/LogInPage';
+import {LogOutPage} from '../pages/LogOutPage';
+import {MainOurUserPage} from '../pages/MainOurUserPage';
+import {MainNewUserPage} from '../pages/MainNewUserPage';
+import {GamePage} from '../pages/GamePage';
 
 export const router = createBrowserRouter([
   {
