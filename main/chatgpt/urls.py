@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import ChatMasterView, StoryView,CustomUserList
+from .views import ChatMasterView, StoryView, ChatTextList
 
 urlpatterns = [
     path('game/', ChatMasterView.as_view(), name='game_master'),
     path('story/', StoryView.as_view(), name='story'),
-    path('gameinfo/', CustomUserList.as_view(), name='list'),
+    path('game/<int:pk>/', ChatTextList.as_view(), name='user-update'),
+    path('all-games/', ChatTextList.as_view(), name='user-update'),
 
 ]

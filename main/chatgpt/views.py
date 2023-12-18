@@ -1,84 +1,90 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
-from .models import ChatText, Story
+from .models import ChatText, Story, Games
 from openai import OpenAI
 from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import ChatGptSerializer, StorySerializer
+from .serializers import ChatGptSerializer, StorySerializer, ChatTextInfo
 
 client = OpenAI(
-    api_key="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",
+    api_key="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",
 )
 # sadas
 
 
-class CustomUserList(generics.ListAPIView):
+class ChatTextList(generics.ListAPIView):
     permission_classes = [AllowAny]
-    queryset = Story.objects.all()
-    serializer_class = StorySerializer
+    queryset = ChatText.objects.all()
+    serializer_class = ChatTextInfo
 
 
-# sasa
 class ChatMasterView(APIView):
     serializer_class = ChatGptSerializer
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
+        current_story = Story.objects.filter(user=user, name=request.data.get('name')).latest('id')
 
-        # Поиск текущей истории для пользователя (предполагается, что у пользователя может быть только одна активная история)
-        current_story = Story.objects.filter(user=user).latest('id')
+        try:
+            current_game = Games.objects.filter(user=user, story=current_story).latest('id')
+        except Games.DoesNotExist:
+            current_game = Games.objects.create(user=user, story=current_story,
+                                                game_name=f"Game for {current_story.name}")
+
         serializer = ChatGptSerializer(data=request.data)
 
-        if serializer.is_valid():
-            serializer.validated_data['user'] = user
-            input_text = serializer.validated_data['text']
-            serializer.validated_data['story'] = current_story
-
-
-            chat_completion = client.chat.completions.create(
-                messages=[
-                    {
-                        "role": "system",
-                        "content": f"В конце ты должен описать что произойдет дальше с положительными или отрицательными эффектами которые возможно будет  менять Здоровье  и в конце истории будет указано оставшееся здоровье персонажа  в формате  Здоровье - {current_story.health}. Здоровье выводишь только 1 раз не более."
-                    },
-                    {
-                        "role": "assistant",
-                        "content": f"  {current_story.description}."
-                    },
-                    {
-                        "role": "user",
-                        "content": input_text,
-                    }
-                ],
-                model="gpt-3.5-turbo",
-                temperature=1,
-                max_tokens=500
-            )
-
-            response_text = chat_completion.choices[0].message.content
-            ChatText.objects.create(text=input_text, answer_player=response_text)
-
-            health_indexes = [response_text.find("Здоровье - "), response_text.find("Здоровье игрока:")]
-            health_values = []
-
-            for index in health_indexes:
-                if index != -1:
-                    # Извлекаем числовое значение после фразы
-                    value = int(response_text[index + len("Здоровье - "):].split('.')[0].strip())
-                    health_values.append(value)
-
-            # Используем более актуальное значение здоровья
-            if health_values:
-                current_story.health = max(health_values)
-                current_story.save()
-            response_text = response_text.replace(f"Здоровье игрока: {current_story.health}", "")
-            response_data = {"text": f"{response_text} Здоровье игрока: {current_story.health}"}
-
-            return Response(response_data, status=status.HTTP_200_OK)
-        else:
+        if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.validated_data['user'] = user
+        input_text = serializer.validated_data['text']
+        serializer.validated_data['story'] = current_story
+        serializer.validated_data['games'] = current_game
+
+        if not Games.objects.filter(id=current_game.id, user=user, story=current_story).exists():
+            return Response({'error': 'Invalid Games ID'}, status=status.HTTP_400_BAD_REQUEST)
+
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"В конце ты должен описать что произойдет дальше..."
+                },
+                {
+                    "role": "assistant",
+                    "content": f"  {current_story.description}."
+                },
+                {
+                    "role": "user",
+                    "content": input_text,
+                }
+            ],
+            model="gpt-3.5-turbo",
+            temperature=1,
+            max_tokens=500
+        )
+
+        response_text = chat_completion.choices[0].message.content
+        ChatText.objects.create(text=input_text, answer_player=response_text, story=current_story, games=current_game)
+
+        health_indexes = [response_text.find("Здоровье - "), response_text.find("Здоровье игрока:")]
+        health_values = []
+
+        for index in health_indexes:
+            if index != -1:
+                value = int(response_text[index + len("Здоровье - "):].split('.')[0].strip())
+                health_values.append(value)
+
+        if health_values:
+            current_story.health = max(health_values)
+            current_story.save()
+
+        response_text = response_text.replace(f"Здоровье игрока: {current_story.health}", "")
+        response_data = {"text": f"{response_text} Здоровье игрока: {current_story.health}"}
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 class StoryView(APIView):
@@ -96,9 +102,9 @@ class StoryView(APIView):
         serializer = self.serializer_class(data=request_data)
 
         if serializer.is_valid():
-            # Связываем историю с текущим пользователем
-            serializer.validated_data['user'] = user
-            serializer.save()
+            story = serializer.save(user=user)
+            Games.objects.create(user=user, story=story, game_name=f"Game for {story.name}")
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
