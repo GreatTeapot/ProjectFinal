@@ -8,8 +8,8 @@ class HeaderNew extends React.Component {
           <h1>Нейросеть</h1>
         </div>
         <div className="buttons">
-          <button className="log">SignIn</button>
-          <button className="reg">SignUp</button>
+          <button className="log"><link to='/login'/>SignIn</button>
+          <button className="reg"><link to='/register'/>SignUp</button>
         </div>
       </header>
     )

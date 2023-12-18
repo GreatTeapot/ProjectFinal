@@ -7,8 +7,11 @@ class HeaderOld extends React.Component {
         <div className="title">
           <h1>Нейросеть</h1>
         </div>
-        <div className="buttons">
-          <button className="exit">LogOut</button>
+        <div className="home">
+          <button><link to="/home"/>Home</button>
+        </div>
+        <div className="exit">
+          <button><link to='/logout'/>LogOut</button>
         </div>
       </header>
     )
