@@ -1,10 +1,12 @@
-import React from 'react';
-import {SignUp} from '../components/signUp/SignUp'
+import React, { Component } from 'react';
+import SignUp from '../components/signUp/SignUp'
 
-export function RegisterPage() {
-  return(
-    <div>
-      <SignUp />
-    </div>
-  )
+export default class RegisterPage extends Component {
+  render() {
+    return (
+      <div>
+        <SignUp />
+      </div>
+    )
+  }
 }

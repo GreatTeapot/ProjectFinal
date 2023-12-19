@@ -1,11 +1,12 @@
-import React from "react";
-import {SignIn} from '../components/signIn/SignIn';
+import React, { Component } from 'react';
+import SignIn from '../components/signIn/SignIn';
 
-
-export function LogInPage() {
-    return(
+export default class LogInPage extends Component {
+  render() {
+    return (
       <div>
         <SignIn/>
       </div>
     )
+  }
 }

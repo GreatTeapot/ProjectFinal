@@ -1,11 +1,12 @@
-import React from "react";
-import {LogOut} from '../components/logOut/LogOut';
+import React, { Component } from 'react';
+import LogOut from '../components/logOut/LogOut';
 
-
-export function LogOutPage() {
-  return(
-    <div>
-      <LogOut/>
-    </div>
-  )
+export default class LogOutPage extends Component {
+  render() {
+    return (
+      <div>
+        <LogOut/>
+      </div>
+    )
+  }
 }
