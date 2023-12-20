@@ -1,9 +1,6 @@
-import React, { Component } from 'react'
 
-export default class GamePage extends Component {
-  render() {
-    return (
-      <div>GamePage</div>
-    )
-  }
+export default function GamePage () {
+  return (
+    <div>GamePage</div>
+  )
 }
