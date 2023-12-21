@@ -5,9 +5,11 @@ import Footer from '../components/footer/Footer';
 export default function MainNewUserPage() {
   return (
     <div className="wrapper">
-      <HeaderNew/>
-      <MainForMain/>
-      <Footer/>
+        <HeaderNew/>
+      <div className='container'>
+        <MainForMain/>
+      </div>
+        <Footer/>
     </div>
   )
 }

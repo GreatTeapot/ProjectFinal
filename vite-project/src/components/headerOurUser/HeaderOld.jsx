@@ -1,15 +1,16 @@
+import { Link } from 'react-router-dom';
 
 export default function HeaderOld() {
     return(
     <header>
-      <div className="title">
+      <div className="header-title">
         <h1>Нейросеть</h1>
       </div>
-      <div className="home">
-        <button><link to="/home"/>Home</button>
-      </div>
-      <div className="exit">
-        <button><link to='/logout'/>LogOut</button>
+      <div className='header-inner'>
+        <nav>
+          <Link className='link' to='/logout'>LogOut</Link>
+          <Link className='link' to='/home'>Home</Link>
+        </nav>
       </div>
     </header>
   )

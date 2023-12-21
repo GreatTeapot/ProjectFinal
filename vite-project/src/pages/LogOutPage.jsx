@@ -2,7 +2,7 @@ import LogOut from '../components/logOut/LogOut';
 
 export default function LogOutPage() {
   return (
-    <div>
+    <div className='wrapper'>
       <LogOut/>
     </div>
   )

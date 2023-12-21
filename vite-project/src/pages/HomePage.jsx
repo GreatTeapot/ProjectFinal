@@ -1,13 +1,13 @@
-import HeaderNew from '../components/headerNewUser/HeaderNew';
+import HeaderOld from '../components/headerOurUser/HeaderOld';
 import MainForHome from '../components/mains/MainForHome';
-import Footer from '../components/footer/Footer';
+import Form from '../components/form/Form'
 
 export default function HomePage() {
   return (
-    <div>
-      <HeaderNew/>
+    <div className='wrapper'>
+      <HeaderOld/>
       <MainForHome/>
-      <Footer/>
+      <Form/>
     </div>
   )
 }

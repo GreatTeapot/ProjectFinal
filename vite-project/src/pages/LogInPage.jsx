@@ -2,7 +2,7 @@ import SignIn from '../components/signIn/SignIn';
 
 export default function LogInPage() {
   return (
-    <div>
+    <div className='wrapper'>
       <SignIn/>
     </div>
   )

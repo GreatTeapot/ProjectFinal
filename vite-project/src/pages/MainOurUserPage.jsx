@@ -5,8 +5,10 @@ import Footer from '../components/footer/Footer';
 export default function MainOurUserPage() {
   return (
     <div className='wrapper'>
-      <HeaderOld/>
-      <MainForMain/>
+        <HeaderOld/>
+      <div className='container'>
+        <MainForMain/>
+      </div>
       <Footer/>
     </div>
   )

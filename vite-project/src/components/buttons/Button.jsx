@@ -1,8 +1,11 @@
+import { Link } from 'react-router-dom';
 
 export default function Button() {
   return(
     <div>
-      <button><link rel="stylesheet" href="" />Start Game</button>
+      <button>
+        <Link className='link' to='/game'>StartGame</Link>
+      </button>
     </div>
   )
 }
